@@ -1,0 +1,459 @@
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Nunito", sans-serif;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+}
+
+@media (prefers-color-scheme: light) {
+  .bg-primary {
+    background-color: #fafafa;
+  }
+
+  .bg-secondary {
+    background-color: #ffffff;
+  }
+
+  .text-primary {
+    color: #222222;
+  }
+
+  .text-secondary {
+    color: #888888;
+  }
+
+  .bg-primary-opposite {
+    background-color: #333333;
+  }
+
+  .text-primary-opposite {
+    color: #ffffff;
+  }
+
+  .bg-neutral {
+    background-color: #aaa;
+  }
+
+  .text-neutral {
+    color: #aaa;
+  }
+
+  .dock-gradient {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#ffffff+0,ffffff+100&1+0,0+100;White+to+Transparent */
+    background: -moz-linear-gradient(
+      bottom,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ); /* FF3.6-15 */
+    background: -webkit-linear-gradient(
+      bottom,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 0.6) 0%,
+      rgba(255, 255, 255, 0) 100%
+    ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    /* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=0 ); IE6-9 */
+  }
+
+  .loader {
+    border-color: #333 #333 #333 transparent;
+  }
+
+  svg > .theme-fill {
+    fill: #222222;
+  }
+
+  svg > .theme-fill.active {
+    fill: #fff;
+  }
+
+  /* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #222 #fafafa;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #fafafa;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #222;
+    border-radius: 10px;
+    border: 3px solid #ffffff;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .bg-primary {
+    background-color: #333333;
+  }
+
+  .bg-secondary {
+    background-color: #222222;
+  }
+
+  .text-primary {
+    color: #ffffff;
+  }
+
+  .text-secondary {
+    color: #cccccc;
+  }
+
+  .bg-primary-opposite {
+    background-color: #fafafa;
+  }
+
+  .text-primary-opposite {
+    color: #222222;
+  }
+
+  .bg-neutral {
+    background-color: #999;
+  }
+
+  .text-neutral {
+    color: #999;
+  }
+
+  svg > .theme-fill {
+    fill: #ffffff;
+  }
+
+  svg > .theme-fill.active {
+    fill: #fff;
+  }
+
+  .dock-gradient {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&1+0,0+100;Black+to+Transparent */
+    background: -moz-linear-gradient(
+      bottom,
+      rgba(51, 51, 51, 0.6) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ); /* FF3.6-15 */
+    background: -webkit-linear-gradient(
+      bottom,
+      rgba(51, 51, 51, 0.6) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(
+      to top,
+      rgba(51, 51, 51, 0.6) 0%,
+      rgba(0, 0, 0, 0) 100%
+    ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    /* filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000',GradientType=0 ); IE6-9 */
+  }
+
+  .loader {
+    border-color: #fff #fff #fff transparent;
+  }
+
+  /* ===== Scrollbar CSS ===== */
+  /* Firefox */
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: #ffffff #333333;
+  }
+
+  /* Chrome, Edge, and Safari */
+  *::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: #333333;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 3px solid #333333;
+  }
+}
+
+.loader {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  display: inline-block;
+  border-width: 2.5px;
+  border-style: solid;
+  box-sizing: border-box;
+  animation: rotation 0.75s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.divider {
+  width: 1px;
+}
+
+.menu-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: calc(100vh - 1.5rem);
+  margin: 0.75rem;
+}
+
+.w-108 {
+  width: 32rem;
+}
+
+.w-120 {
+  width: 40rem;
+}
+
+.w-132 {
+  width: 48rem;
+}
+
+.w-144 {
+  width: 56rem;
+}
+
+.shrink-x-menu {
+  transform: scaleX(0.5);
+  transform-origin: left;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ScaleIn {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes SlideInLeft {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.dock {
+  z-index: 3;
+}
+
+.slide-in-left {
+  animation-name: SlideInLeft;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.slide-out-left {
+  animation-name: SlideInLeft;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+  animation-fill-mode: forwards;
+}
+
+.scale-in {
+  animation-name: ScaleIn;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.scale-out {
+  animation-name: ScaleIn;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+  animation-fill-mode: forwards;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.fade-out {
+  animation-name: fadeIn;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+  animation-fill-mode: forwards;
+}
+
+select {
+  /* // A reset of styles, including removing the default dropdown arrow */
+  appearance: none;
+  /* // Additional resets for further consistency */
+  background-color: transparent;
+  border: none;
+  padding: 0 1em 0 0;
+  margin: 0;
+  width: 100%;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: inherit;
+  line-height: inherit;
+  outline: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+.select {
+  /* styling */
+  font: inherit;
+
+  /* reset */
+
+  margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.select:after {
+  content: ">";
+  height: auto;
+  width: 1em;
+  background-color: #333333;
+}
+
+input[type="radio"] {
+  display: none;
+}
+
+.tabs > * {
+  z-index: 2;
+}
+
+.tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.tab-selector {
+  position: absolute;
+  display: flex;
+  z-index: 1;
+  transition: transform 0.5s ease-in-out;
+}
+
+input[type="radio"]:checked:nth-child(1) ~ .tab-selector {
+  transform: translateX(0);
+}
+
+input[type="radio"]:checked:nth-child(3) ~ .tab-selector {
+  transform: translateX(100%);
+}
+
+input[type="radio"]:checked:nth-child(5) ~ .tab-selector {
+  transform: translateX(200%);
+}
+
+input[type="radio"]:checked:nth-child(7) ~ .tab-selector {
+  transform: translateX(300%);
+}
+
+.translation-table-wrapper {
+  width: 100vw;
+  height: 100vh;
+}
+
+.translation-table {
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+}
+.translation-table table {
+  border: none;
+  table-layout: auto;
+  text-align: left;
+}
+
+.translation-table th {
+  border: none;
+}
+.translation-table td {
+  border: none;
+}
+
+.translation-table thead tr th {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  border: none;
+  min-width: 24rem;
+}
+
+.translation-table thead tr td {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.translation-table tbody tr th {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.hide-x-scrollbar::-webkit-scrollbar {
+  height: 0px;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-x-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  scrollbar-height: none;
+}

@@ -1,0 +1,30 @@
+settings_title: Settings
+donate_title: Donate
+close_title: Close
+new_project_title: New Project
+open_project_title: Open Project
+edit_all_langs_title: Edit All Languages
+export_title: Export
+theme_title: Theme
+auto_title: Auto
+dark_title: Dark
+light_title: Light
+back_title: Back
+menu_title: Menu
+recent_title: Recent
+unsaved_title: Unsaved
+saved_title: Saved
+saving_title: Saving
+unknown_title: Unknown
+err_saving_title: Error saving
+on_launch_title: On Launch open
+on_launch_desc: >-
+  Dictates what the app should do upon launch - Open the Menu or Open the most
+  recent project, If any.
+version_title: Version
+loading_conf_err: An error occurred while loading the settings file.
+disk_full_err: The device does not have enough storage available
+read_file_err: An error occurred while reading the provided file
+write_file_err: An error occurred while writing to the file
+unknown_err: An unknown error occured
+locale_title: Locale

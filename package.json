@@ -1,0 +1,19 @@
+{
+  "name": "locale.ly",
+  "description": "This template should help get you started developing with Tauri and Leptos.",
+  "main": "tailwind.config.js",
+  "scripts": {
+    "css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/styles.css",
+    "css-watch": "tailwindcss -i ./assets/css/input.css -o ./assets/css/styles.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tauri": "tauri",
+    "start": "npm run css && tauri dev",
+    "build": "npm run css && tauri build"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@tauri-apps/cli": "*",
+    "tailwindcss": "*"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "emmet.includeLanguages": {
+    "rust": "html"
+  },
+  "tailwindCSS.experimental.classRegex": ["class: \"(.*)\""],
+  // "tailwindCSS.includeLanguages": {
+  //   "rust": "html"
+  // },
+  "tailwindCSS.includeLanguages": {
+    "rust": "html",
+    "*.rs": "html"
+  },
+  "files.associations": {
+    "*.rs": "rust"
+  },
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": true
+  },
+  "css.validate": false,
+  "i18n-ally.localesPaths": ["assets/locales"],
+  "i18n-ally.keystyle": "flat",
+  "rust-analyzer.showUnlinkedFileNotification": false,
+  "rust-analyzer.diagnostics.disabled": ["unresolved-proc-macro"]
+}
