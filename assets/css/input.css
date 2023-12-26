@@ -43,6 +43,12 @@ button {
   outline: none;
 }
 
+@layer base {
+  button {
+    @apply active:scale-90 hover:opacity-30 duration-150;
+  }
+}
+
 /* 
 @media (prefers-color-scheme: dark) {
   :root {

@@ -1,6 +1,6 @@
 [package]
 name = "locale-ly"
-version = "0.0.0"
+version.workspace = true
 description = "A Tauri App"
 authors = ["you"]
 license = ""

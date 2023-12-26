@@ -28,6 +28,10 @@ body {
     color: #222222;
   }
 
+  .border-text-primary {
+    border-color: #222222;
+  }
+
   .text-secondary {
     color: #888888;
   }
@@ -38,6 +42,10 @@ body {
 
   .text-primary-opposite {
     color: #ffffff;
+  }
+
+  .bg-divider {
+    background-color: #dfdfdf;
   }
 
   .bg-neutral {
@@ -116,6 +124,10 @@ body {
     color: #ffffff;
   }
 
+  .border-text-primary {
+    border-color: #ffffff;
+  }
+
   .text-secondary {
     color: #cccccc;
   }
@@ -126,6 +138,10 @@ body {
 
   .text-primary-opposite {
     color: #222222;
+  }
+
+  .bg-divider {
+    background-color: #666;
   }
 
   .bg-neutral {

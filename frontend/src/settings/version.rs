@@ -41,7 +41,7 @@ fn update() -> impl IntoView {
 fn Copyright() -> impl IntoView {
     view! {
         <>
-            <p class="text-neutral text-sm">Copyright 2024 CyberNova Labs<br/> All Rights Reserved</p>
+            <p class="text-neutral text-sm">Copyright 2024 Locale.ly<br/> All Rights Reserved</p>
         </>
 
     }
