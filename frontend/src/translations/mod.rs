@@ -11,16 +11,16 @@ pub fn Translations() -> impl IntoView {
 
     if !is_project_open {
         return view! {
-            <>
-                <div class="flex flex-col items-center justify-center h-full w-full select-none">
-                    <p class="text-2xl text-neutral">No project open</p>
-                    <p class="text-neutral">Open a project to start translating</p>
-                </div>
-            </>
+            <div class="flex flex-col items-center justify-center h-full w-full select-none flex-1">
+                <p class="text-2xl text-neutral">No project open</p>
+                <p class="text-neutral">Open a project to start translating</p>
+            </div>
         };
     }
 
-    view! {<>
-        <Editor />
-    </>}
+    view! {
+        <div class="hide-x-scrollbar flex flex-1 overflow-auto w-full">
+            <Editor />
+        </div>
+    }
 }

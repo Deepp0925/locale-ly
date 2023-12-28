@@ -1,7 +1,10 @@
-# [package]
-# name = "locale-ly"
-# version = "0.0.0"
-# edition = "2021"
+[package]
+name = "locale-ly"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+frontend = { path = "frontend" }
 
 
 [workspace.package]

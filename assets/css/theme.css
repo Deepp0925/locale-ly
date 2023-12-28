@@ -418,13 +418,7 @@ input[type="radio"]:checked:nth-child(7) ~ .tab-selector {
   transform: translateX(300%);
 }
 
-.translation-table-wrapper {
-  width: 100vw;
-  height: 100vh;
-}
-
 .translation-table {
-  overflow: auto;
   height: 100%;
   width: 100%;
 }
@@ -432,6 +426,7 @@ input[type="radio"]:checked:nth-child(7) ~ .tab-selector {
   border: none;
   table-layout: auto;
   text-align: left;
+  vertical-align: top;
 }
 
 .translation-table th {
@@ -454,12 +449,14 @@ input[type="radio"]:checked:nth-child(7) ~ .tab-selector {
   position: sticky;
   top: 0;
   z-index: 1;
+  font-weight: bold !important;
 }
 
 .translation-table tbody tr th {
   position: sticky;
   left: 0;
   z-index: 1;
+  font-weight: bold !important;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

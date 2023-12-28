@@ -1,5 +1,5 @@
 [package]
-name = "locale-ly"
+name = "locale-ly-backend"
 version.workspace = true
 description = "A Tauri App"
 authors = ["you"]

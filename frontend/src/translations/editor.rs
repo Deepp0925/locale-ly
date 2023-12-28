@@ -17,31 +17,53 @@ use super::row::Row;
 
 #[component]
 pub fn Editor() -> impl IntoView {
-    view! {<div class="flex-1 flex-col flex overflow-scroll">
-        <Locales />
-        <div class="flex-1 flex flex-col">
-            <Row />
-        </div>
-    </div>}
+    view! {
+        <div class="translation-table">
+            <table class="mb-32 px-4">
+                <Locales />
+                <tbody>
+                    <For
+                        each=move || ((0..100).collect::<Vec<_>>())
+                        // a unique key for each item
+                        key=|item| *item
+                        // renders each item to a view
+                        children=|item| {
+                            view!{
+                                <Row />
+                            }
+                        }
+                    />
+                </tbody>
+            </table>
+            </div>
+    }
 }
 
 #[component]
 fn Locales() -> impl IntoView {
-    let locales = ["English (en)", "Spanish (es)", "French (fr)"];
+    let locales = [
+        "English (en)",
+        "Spanish (es)",
+        "French (fr)",
+        "German (de)",
+        "Italian (it)",
+    ];
     view! {
-         <div class="h-auto py-4 flex">
-            <div class="w-96"></div> // Empty Corner Cell
-            <For
-                each=move||locales
-                key=|locale| locale.to_owned()
-                children=|locale| {
-                    view! {
-                        <div class="flex flex-col w-96 pb-3 px-3">
-                            <p class="text-primary text-md mt-4 font-bold">{locale}</p>
-                        </div>
+         <thead>
+            <tr class="py-4">
+                <th class="bg-primary"></th> // Empty Corner Cell
+                <For
+                    each=move||locales
+                    key=|locale| locale.to_owned()
+                    children=|locale| {
+                        view! {
+                            <td class="min-w-96 max-w-96 pb-3 px-3 bg-primary">
+                                <p class="text-primary text-md mt-4 font-bold">{locale}</p>
+                            </td>
+                        }
                     }
-                }
-            />
-        </div>
+                />
+            </tr>
+        </thead>
     }
 }

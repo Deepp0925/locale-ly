@@ -22,9 +22,7 @@ pub fn App() -> impl IntoView {
         <div class="h-full w-full bg-primary flex flex-col">
             <Router>
                 <Menu/>
-                <div class="flex-1 flex w-full">
-                    <Translations />
-                </div>
+                <Translations />
                 <Dock/>
             </Router>
         </div>
