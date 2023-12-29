@@ -29,13 +29,13 @@ pub fn Menu() -> impl IntoView {
             when=is_open
             hide_delay=Duration::from_millis(0)
         >
-            <div class="overlay h-full w-full z-10 fixed" on:click=close_menu></div>
+            <div class="overlay h-full w-full z-10 fixed fade-in" on:click=close_menu></div>
         </AnimatedShow>
         <AnimatedShow
             when=is_open
             hide_delay=Duration::from_millis(0)
         >
-            <div class="menu h-full fixed left-0 w-144 bg-secondary z-20 flex">
+            <div class="menu h-full fixed left-0 w-144 bg-secondary z-20 flex slide-in-left">
                 <div class="my-8 mx-6 flex flex-col w-full">
                     <div class="titlebar flex items-center justify-between">
                         <h1 class="font-bold text-3xl text-primary">Locale.ly</h1>

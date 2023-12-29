@@ -1,6 +1,7 @@
 mod app;
 mod components;
 mod dock;
+mod export;
 mod menu;
 mod notifications;
 mod settings;

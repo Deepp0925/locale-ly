@@ -295,6 +295,15 @@ body {
   }
 }
 
+@keyframes SlideInUp {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 .dock {
   z-index: 3;
 }
@@ -333,6 +342,19 @@ body {
 
 .fade-out {
   animation-name: fadeIn;
+  animation-duration: 0.5s;
+  animation-direction: reverse;
+  animation-fill-mode: forwards;
+}
+
+.slide-in-up {
+  animation-name: SlideInUp;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+}
+
+.slide-out-up {
+  animation-name: SlideInUp;
   animation-duration: 0.5s;
   animation-direction: reverse;
   animation-fill-mode: forwards;
