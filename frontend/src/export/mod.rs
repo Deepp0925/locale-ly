@@ -1,48 +1,57 @@
 mod chips;
-mod state;
 use std::time::Duration;
 
 use chips::Chips;
 use leptos::*;
-pub use state::*;
 
 #[component]
-pub fn Export() -> impl IntoView {
-    let state = use_export_read_signal();
-    let is_open = MaybeSignal::derive(move || {
-        state.get().unwrap_or(ExportState::Closed) == ExportState::Open
-    });
+pub fn ExportBtn() -> impl IntoView {
+    let state = create_rw_signal(false);
 
-    let close_export = |_| close_export();
+    let open_export = move |_| state.set(true);
 
     view! {
-        <AnimatedShow
-            when=is_open
-            hide_delay=Duration::from_millis(0)
-        >
-            <div class="overlay h-full w-full z-10 fixed" on:click=close_export></div>
-        </AnimatedShow>
-        <AnimatedShow
-            when=is_open
-            hide_delay=Duration::from_millis(0)
-        >
-            <div class="export w-full fixed bottom-0 h-auto bg-secondary z-20 flex flex-col px-4 py-10 slide-in-up">
-                <div class="flex justify-between items-center py-2">
-                    <h1 class="font-bold text-xl text-primary">Export</h1>
-                    <button class="ml-auto" on:click=close_export>
-                        <i class="feather-x text-primary text-lg"></i>
-                    </button>
+        <button class="bg-primary-opposite text-primary-opposite h-full md:w-44 lg:w-56" on:click=open_export>
+            Export
+        </button>
+        <Export state />
+    }
+}
+
+#[component]
+pub fn Export(state: RwSignal<bool>) -> impl IntoView {
+    let close = move |_| state.set(false);
+
+    view! {
+        <Portal>
+            <AnimatedShow
+                when=state
+                hide_delay=Duration::from_millis(0)
+            >
+                <div class="overlay" on:click=close></div>
+            </AnimatedShow>
+            <AnimatedShow
+                when=state
+                hide_delay=Duration::from_millis(0)
+            >
+                <div class="export w-full fixed bottom-0 h-auto bg-secondary z-20 flex flex-col px-4 py-10 slide-in-up">
+                    <div class="flex justify-between items-center py-2">
+                        <h1 class="font-bold text-xl text-primary">Export</h1>
+                        <button class="ml-auto" on:click=close>
+                            <i class="feather-x text-primary text-lg"></i>
+                        </button>
+                    </div>
+                    <div class="h-5"></div>
+                    <Chips />
+                    <div class="h-8"></div>
+                    <div class="flex items-center">
+                        <span class="text-primary text-sm mr-4">Output Folder:</span>
+                        <Location />
+                        <ExportOverrideBtn />
+                    </div>
                 </div>
-                <div class="h-5"></div>
-                <Chips />
-                <div class="h-8"></div>
-                <div class="flex items-center">
-                    <span class="text-primary text-sm mr-4">Output Folder:</span>
-                    <Location />
-                    <ExportBtn />
-                </div>
-            </div>
-        </AnimatedShow>
+            </AnimatedShow>
+        </Portal >
     }
 }
 
@@ -61,7 +70,7 @@ fn location() -> impl IntoView {
 }
 
 #[component]
-fn export_btn() -> impl IntoView {
+fn export_override_btn() -> impl IntoView {
     let (state, set_state) = create_signal(false);
 
     let txt = move || {

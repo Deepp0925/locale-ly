@@ -1,5 +1,3 @@
-use std::vec;
-
 use leptos::*;
 
 use super::row::Row;
@@ -23,11 +21,11 @@ pub fn Editor() -> impl IntoView {
                 <Locales />
                 <tbody>
                     <For
-                        each=move || ((0..100).collect::<Vec<_>>())
+                        each=move || ((0..512).collect::<Vec<_>>())
                         // a unique key for each item
                         key=|item| *item
                         // renders each item to a view
-                        children=|item| {
+                        children=|_item| {
                             view!{
                                 <Row />
                             }
@@ -35,7 +33,7 @@ pub fn Editor() -> impl IntoView {
                     />
                 </tbody>
             </table>
-            </div>
+        </div>
     }
 }
 
@@ -50,15 +48,15 @@ fn Locales() -> impl IntoView {
     ];
     view! {
          <thead>
-            <tr class="py-4">
-                <th class="bg-primary"></th> // Empty Corner Cell
+            <tr>
+                <th class="bg-primary px-3 py-4 text-primary">Keys / Locales</th> // Empty Corner Cell
                 <For
                     each=move||locales
                     key=|locale| locale.to_owned()
                     children=|locale| {
                         view! {
-                            <td class="min-w-96 max-w-96 pb-3 px-3 bg-primary">
-                                <p class="text-primary text-md mt-4 font-bold">{locale}</p>
+                            <td class="min-w-96 max-w-96 py-4 px-3 bg-primary text-primary text-md font-bold">
+                                <strong>{locale}</strong>
                             </td>
                         }
                     }

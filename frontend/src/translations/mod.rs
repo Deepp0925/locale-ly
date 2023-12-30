@@ -1,6 +1,5 @@
 mod cell;
 mod editor;
-mod locales;
 mod row;
 use editor::Editor;
 use leptos::*;

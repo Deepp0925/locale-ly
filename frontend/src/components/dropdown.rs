@@ -11,8 +11,8 @@ pub struct DropDownItem {
 #[component]
 pub fn DropDown(items: Vec<DropDownItem>) -> impl IntoView {
     view! {
-        <div class="w-full max-w-xs flex justify-between items-center bg-primary p-3 rounded-md">
-            <select class="select w-full max-w-xs border-none text-primary">
+        <div class="w-full max-w-sm flex justify-between items-center bg-primary p-3 rounded-md">
+            <select class="select w-full border-none text-primary">
                 <For
                     each=move || items.clone()
                     key=move |item| item.value.clone()

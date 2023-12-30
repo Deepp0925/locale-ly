@@ -55,7 +55,7 @@ fn Chip(info: RwSignal<ChipInfo>) -> impl IntoView {
             "bg-primary text-primary"
         };
 
-        format!("rounded-lg mr-4 px-10 py-4 font-bold cursor-pointer {c}")
+        format!("rounded-lg mr-4 px-10 py-4 font-bold hover:opacity-100 {c}")
     };
 
     let toggle = move |_| info.update(|info| info.toggle());

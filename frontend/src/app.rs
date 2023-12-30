@@ -1,9 +1,8 @@
 use leptos::*;
-use leptos_router::Router;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
-use crate::{dock::Dock, export::Export, menu::Menu, translations::Translations};
+use crate::{dock::Dock, translations::Translations};
 
 #[wasm_bindgen]
 extern "C" {
@@ -20,12 +19,8 @@ struct GreetArgs<'a> {
 pub fn App() -> impl IntoView {
     view! {
         <div class="h-full w-full bg-primary flex flex-col">
-            <Router>
-                <Menu/>
-                <Export />
-                <Translations />
-                <Dock/>
-            </Router>
+            <Translations />
+            <Dock/>
         </div>
     }
 }
