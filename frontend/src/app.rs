@@ -2,7 +2,7 @@ use leptos::*;
 use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
-use crate::{dock::Dock, translations::Translations};
+use crate::{dock::Dock, project::ProjectState, translations::Translations};
 
 #[wasm_bindgen]
 extern "C" {
@@ -17,6 +17,9 @@ struct GreetArgs<'a> {
 
 #[component]
 pub fn App() -> impl IntoView {
+    // initialize global state
+    provide_context(create_rw_signal(ProjectState::new()));
+
     view! {
         <div class="h-full w-full bg-primary flex flex-col">
             <Translations />

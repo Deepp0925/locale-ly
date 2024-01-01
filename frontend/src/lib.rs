@@ -5,8 +5,10 @@ mod export;
 mod locales;
 mod menu;
 mod notifications;
+mod project;
 mod settings;
 mod translations;
+mod utils;
 use app::*;
 use leptos::*;
 

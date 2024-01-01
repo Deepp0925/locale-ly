@@ -45,7 +45,7 @@ button {
 
 @layer base {
   button {
-    @apply active:scale-90 hover:opacity-30 duration-150;
+    @apply active:scale-90 hover:opacity-70 duration-150;
   }
 }
 
