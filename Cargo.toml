@@ -7,8 +7,14 @@ edition = "2021"
 frontend = { path = "frontend" }
 
 
+[workspace.dependencies]
+lingual = { git = "https://github.com/Deepp0925/lingual.git" }
+errors = { path = "errors" }
+core = { path = "core" }
+
+
 [workspace.package]
 version = "0.0.0"
 
 [workspace]
-members = ["src-tauri", "core", "frontend"]
+members = ["src-tauri", "core", "frontend", "errors"]

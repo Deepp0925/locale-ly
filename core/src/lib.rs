@@ -1,14 +1,6 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+pub mod parsers;
+pub mod pattern;
+// pub mod strings;
+// pub mod translated;
+// re-export everything from the lingual crate
+pub use lingual::*;
