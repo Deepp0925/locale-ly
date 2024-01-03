@@ -27,7 +27,7 @@ pub fn basic_parser(s: &mut String, p: RegexPattern) -> InterpolatedStr {
         } else {
             match_.end() - 3
         };
-        let item = match_.as_str().to_string();
+        let item = match_.as_str().to_owned();
         items.push(item);
         s.replace_range(match_.range(), &format!("{{{}}}", i));
     }
