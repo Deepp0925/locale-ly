@@ -15,15 +15,27 @@ struct GreetArgs<'a> {
     name: &'a str,
 }
 
+// #[component]
+// pub fn App() -> impl IntoView {
+//     // initialize global state
+//     provide_context(create_rw_signal(ProjectState::new()));
+
+//     view! {
+//         <div class="h-full w-full bg-primary flex flex-col">
+//             <Translations />
+//             <Dock/>
+//         </div>
+//     }
+// }
+
 #[component]
 pub fn App() -> impl IntoView {
-    // initialize global state
-    provide_context(create_rw_signal(ProjectState::new()));
+    let args = GreetArgs { name: "World" };
+    let result = invoke("greet", JsValue::symbol(todo!()));
 
     view! {
         <div class="h-full w-full bg-primary flex flex-col">
-            <Translations />
-            <Dock/>
+
         </div>
     }
 }

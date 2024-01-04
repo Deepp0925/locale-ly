@@ -9,8 +9,10 @@ mod project;
 mod settings;
 mod translations;
 mod utils;
-use app::*;
+// use app::*;
 use leptos::*;
+mod appr;
+use appr::*;
 
 // Load I18n macro, for allow you use `t!` macro in anywhere.
 #[macro_use]

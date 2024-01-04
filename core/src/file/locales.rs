@@ -29,6 +29,12 @@ impl Locales {
     }
 
     pub fn as_bytes(&self) -> Vec<u8> {
-        todo!()
+        serde_json::to_vec(self).unwrap()
+    }
+}
+
+impl ToString for Locales {
+    fn to_string(&self) -> String {
+        serde_json::to_string(self).unwrap()
     }
 }

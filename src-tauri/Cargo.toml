@@ -1,5 +1,5 @@
 [package]
-name = "locale-ly-backend"
+name = "backend"
 version.workspace = true
 description = "A Tauri App"
 authors = ["you"]
@@ -14,8 +14,9 @@ tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
 tauri = { version = "1.5", features = ["shell-open"] }
-serde = { version = "1.0", features = ["derive"] }
+serde = { version = "1.0", features = ["derive", "rc"] }
 serde_json = "1.0"
+core_m = {path = "../core", package = "core"}
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
