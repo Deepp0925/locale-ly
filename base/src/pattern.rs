@@ -20,8 +20,8 @@ pub enum RegexPattern {
     /// this regex pattern will match all items that are wrapped
     /// in `%{item}`
     Ruby,
-    // /// A custom regex pattern
-    // Custom(String),
+    /// A custom regex pattern
+    Custom(String),
 }
 
 impl Default for &RegexPattern {
@@ -45,9 +45,9 @@ impl RegexPattern {
             RegexPattern::Ruby => Ok(Regex::new(RUBY_REGEX_PATTERN).unwrap()),
             // // Custom regex patterns are not hardcoded and therefore
             // // can be invalid and return an error if they fail
-            // RegexPattern::Custom(pattern) => {
-            //     Regex::new(pattern).map_err(|err| Errors::Regex(err.to_string()))
-            // }
+            RegexPattern::Custom(pattern) => {
+                Regex::new(pattern).map_err(|err| Errors::Regex(err.to_string()))
+            }
         }
     }
 }

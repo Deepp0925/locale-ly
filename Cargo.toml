@@ -10,11 +10,12 @@ frontend = { path = "frontend" }
 [workspace.dependencies]
 lingual = { git = "https://github.com/Deepp0925/lingual.git" }
 errors = { path = "errors" }
-core = { path = "core" }
+base = { path = "base" }
+rust-i18n = "2.1.0"
 
 
 [workspace.package]
 version = "0.0.0"
 
 [workspace]
-members = ["src-tauri", "core", "frontend", "errors"]
+members = ["src-tauri", "base", "frontend", "errors", "cli"]

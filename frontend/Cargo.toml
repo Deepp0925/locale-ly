@@ -14,5 +14,4 @@ wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4"
 js-sys = "0.3"
 chrono = "0.4.31"
-rust-i18n = "2.1.0"
-core_m = {path = "../core", package = "core"}
+rust-i18n = {workspace=true}
