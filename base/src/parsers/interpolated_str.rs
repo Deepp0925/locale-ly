@@ -51,15 +51,15 @@ impl<'a> InterpolatedStr<'a> {
     pub async fn translate_bulk<L: Into<Lang> + Copy>(
         &self,
         src_lang: L,
-        target_lang: Vec<L>,
+        target_lang: &Vec<L>,
     ) -> ErrorsResult<Vec<Translated>> {
         let mut translated_strs = Vec::with_capacity(target_lang.len());
 
         for lang in target_lang {
-            let translated = self.translate(src_lang, lang).await?;
+            let translated = self.translate(src_lang, *lang).await?;
             translated_strs.push(Translated {
                 txt: translated,
-                lang: lang.into(),
+                lang: (*lang).into(),
             });
         }
 

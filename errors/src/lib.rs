@@ -3,6 +3,10 @@ pub type ErrorsResult<T> = Result<T, Errors>;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Errors {
+    /// No Src Locale provided
+    NoSrcLocale,
+    /// Unknown File Type resulting in no file being parsed
+    UnknownFileType,
     // Translation(TranslationError),
     /// An error occurred while parsing the regex.
     Regex(String),

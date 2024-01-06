@@ -4,6 +4,7 @@ use std::{
     collections::{hash_map::IterMut, HashMap},
     fs::File,
     io::BufReader,
+    path::Path,
 };
 
 use super::item::ItemType;
@@ -49,13 +50,14 @@ impl<'a> IntoIterator for &'a mut ParseFile {
 }
 
 impl ParseFile {
-    fn open_file(path: &str) -> BufReader<File> {
-        let file = File::open(path).expect(&t!("file_not_found", path = path));
+    fn open_file(path: impl AsRef<Path>) -> BufReader<File> {
+        let file =
+            File::open(path.as_ref()).expect(&t!("file_not_found", path = path.as_ref().display()));
         BufReader::new(file)
     }
 
     /// Opens a file and returns a hashmap of the file contents
-    pub fn open_json(path: &str) -> Self {
+    pub fn open_json(path: impl AsRef<Path>) -> Self {
         let reader = Self::open_file(path);
         let data: JsonMap = json_from_reader(reader).expect(&t!("file_expected_key_value"));
 
@@ -63,7 +65,7 @@ impl ParseFile {
     }
 
     /// Opens a file and returns a hashmap of the file contents
-    pub fn open_yaml(path: &str) -> Self {
+    pub fn open_yaml(path: impl AsRef<Path>) -> Self {
         let reader = Self::open_file(path);
         let data: Mapping = yaml_from_reader(reader).expect(&t!("file_expected_key_value"));
         Self::from(data)

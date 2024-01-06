@@ -1,7 +1,11 @@
 file_not_found: Unable to open file at %{path}
 regex_error: Unable to parse regex %{regex}
 expected_string: Expected string for  key `%{key}`
-file_expected_key_value: "Expected the file to be in `[key]: [value]` format"
+file_expected_key_value: 'Expected the file to be in `[key]: [value]` format'
 Errors:
   err1: Error 1
+  other: Other error 1
   err2: Error 2
+no_langs_specified: No Target Locales were specified
+no_src_lang_specified: Unable to detect Source Locale. Specify the Source Locale.
+no_file_extension: Unable to get file extension from the source file
