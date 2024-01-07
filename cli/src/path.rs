@@ -1,10 +1,13 @@
+use errors::{Errors, ErrorsResult};
 use lingual::Lang;
 use std::{
     collections::HashMap,
+    fs::File,
+    io::BufWriter,
     path::{Path, PathBuf},
     str::FromStr,
 };
-use tokio::{fs::File, io::BufWriter};
+use tokio::fs::File as TokioFile;
 
 /// Parses relevant information from the path
 /// this information pertains to the yml or json
@@ -46,26 +49,34 @@ impl<P: AsRef<Path>> ParseInfo for P {
     }
 }
 
-pub trait GenLocalePaths {
+pub trait LocalePaths {
     fn gen_locale_paths(&self, langs: &[Lang]) -> Vec<PathBuf>;
 
-    async fn create_locale_files(&self, langs: &[Lang]) -> HashMap<Lang, BufWriter<File>> {
+    async fn create_locale_files(
+        &self,
+        langs: &[Lang],
+    ) -> ErrorsResult<HashMap<Lang, BufWriter<File>>> {
         let paths = self.gen_locale_paths(langs);
         let mut files = HashMap::with_capacity(paths.len());
-        let mut options = File::options();
+        let mut options = TokioFile::options();
         let options = options.create(true).write(true);
         for (i, path) in paths.iter().enumerate() {
-            let file = options.open(path).await.unwrap();
-            file.sync_all().await.unwrap();
+            let file = options
+                .open(path)
+                .await
+                .map_err(|err| Errors::CreateLocaleFile(err.to_string()))?
+                .into_std()
+                .await;
+
             let file = BufWriter::new(file);
             files.insert(langs[i], file);
         }
 
-        files
+        Ok(files)
     }
 }
 
-impl<P: AsRef<Path>> GenLocalePaths for P {
+impl<P: AsRef<Path>> LocalePaths for P {
     fn gen_locale_paths(&self, langs: &[Lang]) -> Vec<PathBuf> {
         let path = self.as_ref();
         let mut paths = Vec::with_capacity(langs.len());

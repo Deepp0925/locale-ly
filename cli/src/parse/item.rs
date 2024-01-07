@@ -7,11 +7,48 @@ use std::collections::{hash_map::IterMut, HashMap};
 /// of strings, At the moment only a depth of 1 is supported for hashmaps
 /// and no support for arrays is provided at the moment. Arrays might be supported later on
 /// but for now it is regarded as a low priority and not widely used.
+
+pub type MappedObject = HashMap<String, String>;
+
+pub trait Serialable {
+    fn serialize(&self, writer: &mut dyn std::io::Write) -> std::io::Result<()>;
+}
+
 #[derive(Debug, Clone)]
 pub enum ItemType {
     String(String),
     // Array(Vec<String>),
-    Object(HashMap<String, String>),
+    Object(MappedObject),
+}
+
+impl From<ItemType> for JsonValue {
+    fn from(item: ItemType) -> Self {
+        match item {
+            ItemType::String(string) => Self::String(string),
+            ItemType::Object(map) => {
+                let mut object = serde_json::Map::with_capacity(map.len());
+                for (key, value) in map {
+                    object.insert(key, value.into());
+                }
+                Self::Object(object)
+            }
+        }
+    }
+}
+
+impl From<ItemType> for YamlValue {
+    fn from(item: ItemType) -> Self {
+        match item {
+            ItemType::String(string) => Self::String(string),
+            ItemType::Object(map) => {
+                let mut object = serde_yaml::Mapping::with_capacity(map.len());
+                for (key, value) in map {
+                    object.insert(key.into(), value.into());
+                }
+                Self::Mapping(object)
+            }
+        }
+    }
 }
 
 impl<'a> IntoIterator for &'a mut ItemType {

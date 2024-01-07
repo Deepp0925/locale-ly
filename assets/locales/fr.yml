@@ -1,0 +1,8 @@
+expected_string: Chaîne attendue pour clé `%{key}`
+file_expected_key_value: "S'attendait à ce que le fichier soit dans le format `[clé]: [valeur]`"
+no_langs_specified: Aucune localisation cible n'a été spécifiée
+---
+Errors:
+  err2: Erreur 2
+  err1: Erreur 1
+  other: Autre erreur 1

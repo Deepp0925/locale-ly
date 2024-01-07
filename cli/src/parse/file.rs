@@ -1,7 +1,10 @@
 use serde_json::{from_reader as json_from_reader, Map, Value as JsonValue};
 use serde_yaml::{from_reader as yaml_from_reader, Mapping, Value as YamlValue};
 use std::{
-    collections::{hash_map::IterMut, HashMap},
+    collections::{
+        hash_map::{IntoIter, IterMut},
+        HashMap,
+    },
     fs::File,
     io::BufReader,
     path::Path,
@@ -9,9 +12,10 @@ use std::{
 
 use super::item::ItemType;
 
+pub type MappedItems = HashMap<String, ItemType>;
 #[derive(Debug, Clone)]
 pub struct ParseFile {
-    pub items: HashMap<String, ItemType>,
+    pub items: MappedItems,
 }
 pub type JsonMap = Map<String, JsonValue>;
 
@@ -46,6 +50,15 @@ impl<'a> IntoIterator for &'a mut ParseFile {
 
     fn into_iter(self) -> Self::IntoIter {
         self.items.iter_mut()
+    }
+}
+
+impl IntoIterator for ParseFile {
+    type Item = (String, ItemType);
+    type IntoIter = IntoIter<String, ItemType>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.items.into_iter()
     }
 }
 

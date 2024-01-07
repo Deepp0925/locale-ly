@@ -37,21 +37,17 @@ impl<'a> InterpolatedStr<'a> {
         Ok(text)
     }
 
-    pub async fn translate<L: Into<Lang> + Copy>(
-        &self,
-        src_lang: L,
-        target_lang: L,
-    ) -> ErrorsResult<String> {
+    pub async fn translate(&self, src_lang: Lang, target_lang: Lang) -> ErrorsResult<String> {
         let translated = translate(self.txt, src_lang, target_lang).await?;
-        let translated = self.replace(translated.text()?)?;
+        let translated = self.replace(&translated.text)?;
 
         Ok(translated.into_owned())
     }
 
-    pub async fn translate_bulk<L: Into<Lang> + Copy>(
+    pub async fn translate_bulk(
         &self,
-        src_lang: L,
-        target_lang: &Vec<L>,
+        src_lang: Lang,
+        target_lang: &[Lang],
     ) -> ErrorsResult<Vec<Translated>> {
         let mut translated_strs = Vec::with_capacity(target_lang.len());
 
@@ -59,7 +55,7 @@ impl<'a> InterpolatedStr<'a> {
             let translated = self.translate(src_lang, *lang).await?;
             translated_strs.push(Translated {
                 txt: translated,
-                lang: (*lang).into(),
+                lang: (*lang),
             });
         }
 

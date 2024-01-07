@@ -18,6 +18,10 @@ pub enum Errors {
     /// meaning if the parser locates a Object(hashmap) it must be of type HashMap<String, String>
     /// and not any other type
     ExpectedString(String),
+    /// Error Serializing and writing to file
+    Serialize(String),
+    /// Error creating locale file
+    CreateLocaleFile(String),
 }
 
 impl From<TranslationError> for Errors {
