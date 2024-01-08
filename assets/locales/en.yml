@@ -1,7 +1,7 @@
-expected_string: Expected string for  key `%{key}`
+expected_string: "Expected string for  key: %{key}"
 file_expected_key_value: "Expected the file to be in `[key]: [value]` format"
 no_langs_specified: No Target Locales were specified
-
+some_other: Some other string
 Errors:
   err2: Error 2
   err1: Error 1

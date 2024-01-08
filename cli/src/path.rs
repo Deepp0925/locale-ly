@@ -52,14 +52,11 @@ impl<P: AsRef<Path>> ParseInfo for P {
 pub trait LocalePaths {
     fn gen_locale_paths(&self, langs: &[Lang]) -> Vec<PathBuf>;
 
-    async fn create_locale_files(
-        &self,
-        langs: &[Lang],
-    ) -> ErrorsResult<HashMap<Lang, BufWriter<File>>> {
+    async fn create_locale_files(&self, langs: &[Lang]) -> ErrorsResult<HashMap<Lang, File>> {
         let paths = self.gen_locale_paths(langs);
         let mut files = HashMap::with_capacity(paths.len());
         let mut options = TokioFile::options();
-        let options = options.create(true).write(true);
+        let options = options.create(true).read(true).write(true);
         for (i, path) in paths.iter().enumerate() {
             let file = options
                 .open(path)
@@ -68,7 +65,7 @@ pub trait LocalePaths {
                 .into_std()
                 .await;
 
-            let file = BufWriter::new(file);
+            let file = file;
             files.insert(langs[i], file);
         }
 

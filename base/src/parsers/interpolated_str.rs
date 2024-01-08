@@ -1,5 +1,7 @@
 use std::borrow::Cow;
 
+use crate::pattern::RegexPattern;
+
 use super::{base::basic_parser, translated::Translated};
 use errors::{Errors, ErrorsResult};
 use lingual::{translate, Lang};
@@ -21,6 +23,10 @@ pub struct InterpolatedStr<'a> {
 }
 
 impl<'a> InterpolatedStr<'a> {
+    pub fn from_mut_string(s: &'a mut String, regex: Option<RegexPattern>) -> Self {
+        basic_parser(s, regex.unwrap_or_default())
+    }
+
     /// replaces the interpolated portion of the string with the given items
     /// # Arguments
     /// * `text` - the string to replace the items in
@@ -40,6 +46,7 @@ impl<'a> InterpolatedStr<'a> {
     pub async fn translate(&self, src_lang: Lang, target_lang: Lang) -> ErrorsResult<String> {
         let translated = translate(self.txt, src_lang, target_lang).await?;
         let translated = self.replace(&translated.text)?;
+        println!("{}", translated);
 
         Ok(translated.into_owned())
     }
@@ -66,11 +73,5 @@ impl<'a> InterpolatedStr<'a> {
 impl From<InterpolatedStr<'_>> for String {
     fn from(s: InterpolatedStr) -> Self {
         s.txt.to_owned()
-    }
-}
-
-impl<'a> From<&'a mut String> for InterpolatedStr<'a> {
-    fn from(s: &'a mut String) -> Self {
-        basic_parser(s, Default::default())
     }
 }

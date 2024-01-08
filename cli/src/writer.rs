@@ -5,13 +5,17 @@ use serde::Serialize;
 use serde_json::{Map as JsonMap, Serializer as JsonSerializer};
 use serde_yaml::{Mapping, Serializer as YamlSerializer};
 
-use std::{collections::HashMap, fs::File, io::BufWriter};
+use std::{
+    collections::HashMap,
+    fs::File,
+    io::{BufRead, BufReader, BufWriter, Write},
+};
 
 use crate::{object::ObjectType, path::ParsedFileType};
 
 enum SerializerType {
-    Json(JsonSerializer<BufWriter<File>>),
-    Yaml(YamlSerializer<BufWriter<File>>),
+    Json(JsonSerializer<File>),
+    Yaml(YamlSerializer<File>),
 }
 
 impl From<&SerializerType> for ParsedFileType {
@@ -97,6 +101,31 @@ impl WriterInnerType {
         }
         Ok(())
     }
+
+    fn into_inner_writer(mut self) -> ErrorsResult<File> {
+        self.force_write_objects()?;
+        match self.w {
+            SerializerType::Json(w) => Ok(w.into_inner()),
+            SerializerType::Yaml(w) => w
+                .into_inner()
+                .map_err(|err| Errors::Serialize(err.to_string())),
+        }
+    }
+
+    /// removes the `---` lines from the file
+    /// this is only needed for yaml files
+    fn finish(self) -> ErrorsResult<()> {
+        let file_type = ParsedFileType::from(&self.w);
+        let file = self.into_inner_writer()?;
+
+        if file_type == ParsedFileType::Json {
+            return Ok(());
+        }
+
+        //TODO todo!("remove the --- lines from the file");
+
+        Ok(())
+    }
 }
 
 pub struct Writers {
@@ -104,10 +133,7 @@ pub struct Writers {
 }
 
 impl Writers {
-    pub fn from_file_map(
-        file_map: HashMap<Lang, BufWriter<File>>,
-        file_type: ParsedFileType,
-    ) -> Self {
+    pub fn from_file_map(file_map: HashMap<Lang, File>, file_type: ParsedFileType) -> Self {
         let writers = file_map
             .into_iter()
             .map(|(lang, w)| {
@@ -127,15 +153,22 @@ impl Writers {
         // safe to unwrap because we know that the lang is in the map
         let writer = self.writers.get_mut(lang).unwrap();
 
-        writer.push_object(key, obj)?;
-
-        Ok(())
+        writer.push_object(key, obj)
     }
 
     pub fn push(&mut self, lang: &Lang, key: String, value: String) -> ErrorsResult<()> {
         // safe to unwrap because we know that the lang is in the map
         let writer = self.writers.get_mut(lang).unwrap();
-        writer.push(key, value)?;
+        writer.push(key, value)
+    }
+
+    pub fn finish(self) -> ErrorsResult<()> {
+        // yaml files add a `---` between each sections
+        // so this is a hack to remove all the `---\n`s
+        for (_, writer) in self.writers {
+            writer.finish()?;
+        }
+
         Ok(())
     }
 }

@@ -1,6 +1,6 @@
 use std::{collections::HashMap, path::Path};
 
-use base::parsers::{interpolated_str::InterpolatedStr, translated::Translated};
+use base::{parsers::interpolated_str::InterpolatedStr, pattern::RegexPattern};
 use errors::{Errors, ErrorsResult};
 use lingual::Lang;
 
@@ -23,6 +23,8 @@ pub struct TranslateProps<'a> {
     /// will detect if not specified
     pub file_type: Option<ParsedFileType>,
     pub path: &'a Path,
+    /// regex pattern
+    pub regex: Option<RegexPattern>,
 }
 
 pub async fn translate(props: TranslateProps<'_>) -> ErrorsResult<()> {
@@ -31,6 +33,7 @@ pub async fn translate(props: TranslateProps<'_>) -> ErrorsResult<()> {
         src_lang,
         file_type,
         path,
+        regex,
     } = props;
 
     if langs.is_empty() {
@@ -50,23 +53,25 @@ pub async fn translate(props: TranslateProps<'_>) -> ErrorsResult<()> {
         .or(path_info.map(|info| info.file_type))
         .ok_or(Errors::UnknownFileType)?;
 
+    let dest_files = path.create_locale_files(&langs).await?;
+    let mut writers = Writers::from_file_map(dest_files, file_type);
     let parsed_file = match file_type {
         ParsedFileType::Yaml => ParseFile::open_yaml(path),
         ParsedFileType::Json => ParseFile::open_json(path),
     };
 
-    let dest_files = path.create_locale_files(&langs).await?;
-    let mut writers = Writers::from_file_map(dest_files, file_type);
     for (key, value) in parsed_file.into_iter() {
         match value {
             ItemType::String(mut str) => {
-                handle_str(&mut str, src_lang, key, &langs, &mut writers).await?;
+                handle_str(&mut str, src_lang, key, &langs, regex, &mut writers).await?;
             }
             ItemType::Object(obj) => {
-                handle_object(obj, src_lang, &langs, key, file_type, &mut writers).await?;
+                handle_object(obj, src_lang, &langs, key, file_type, regex, &mut writers).await?;
             }
         }
     }
+
+    writers.finish()?;
 
     Ok(())
 }
@@ -76,9 +81,10 @@ async fn handle_str(
     src_lang: Lang,
     key: String,
     langs: &[Lang],
+    regex: Option<RegexPattern>,
     writers: &mut Writers,
 ) -> ErrorsResult<()> {
-    let translated_txts = InterpolatedStr::from(txt)
+    let translated_txts = InterpolatedStr::from_mut_string(txt, regex)
         .translate_bulk(src_lang, langs)
         .await?;
 
@@ -95,6 +101,7 @@ async fn handle_object(
     langs: &[Lang],
     key: String,
     file_type: ParsedFileType,
+    regex: Option<RegexPattern>,
     writers: &mut Writers,
 ) -> ErrorsResult<()> {
     let mut all_translated_items: HashMap<&Lang, ObjectType> = langs
@@ -103,7 +110,7 @@ async fn handle_object(
         .collect();
 
     for (key, mut value) in map {
-        let translated_txts = InterpolatedStr::from(&mut value)
+        let translated_txts = InterpolatedStr::from_mut_string(&mut value, regex)
             .translate_bulk(src_lang, langs)
             .await?;
         for translated in translated_txts {
@@ -123,14 +130,16 @@ async fn handle_object(
 }
 
 mod test {
-    use super::*;
+
     #[tokio::test]
     async fn translate_test() {
+        use super::*;
         let props = TranslateProps {
-            langs: vec![Lang::En, Lang::Fr],
-            src_lang: None,
+            langs: vec![Lang::Fr],
+            src_lang: Some(Lang::En),
             file_type: None,
             path: Path::new("../assets/locales/en.yml"),
+            regex: Some(RegexPattern::Ruby),
         };
 
         translate(props).await.unwrap();

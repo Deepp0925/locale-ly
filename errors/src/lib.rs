@@ -22,6 +22,8 @@ pub enum Errors {
     Serialize(String),
     /// Error creating locale file
     CreateLocaleFile(String),
+    /// Error removing dashes
+    RemoveDashes(String),
 }
 
 impl From<TranslationError> for Errors {

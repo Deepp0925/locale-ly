@@ -10,7 +10,7 @@ pub const DEFAULT_REGEX_PATTERN: &str = r"\{(\w+)\}";
 /// in `%{item}`
 pub const RUBY_REGEX_PATTERN: &str = r"%\{(\w+)\}";
 
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone, Default, Copy)]
 pub enum RegexPattern {
     /// The default regex pattern will match all items
     /// that are wrapped in curly braces, i.e. `{item}`
@@ -21,7 +21,7 @@ pub enum RegexPattern {
     /// in `%{item}`
     Ruby,
     /// A custom regex pattern
-    Custom(String),
+    Custom(&'static str),
 }
 
 impl Default for &RegexPattern {
@@ -32,6 +32,12 @@ impl Default for &RegexPattern {
 
 impl From<RegexPattern> for Regex {
     fn from(pattern: RegexPattern) -> Self {
+        pattern.regex().unwrap()
+    }
+}
+
+impl From<&RegexPattern> for Regex {
+    fn from(pattern: &RegexPattern) -> Self {
         pattern.regex().unwrap()
     }
 }
