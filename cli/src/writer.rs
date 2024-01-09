@@ -8,7 +8,7 @@ use serde_yaml::{Mapping, Serializer as YamlSerializer};
 use std::{
     collections::HashMap,
     fs::File,
-    io::{BufRead, BufReader, BufWriter, Write},
+    io::{BufRead, BufReader, Read, Write},
 };
 
 use crate::{object::ObjectType, path::ParsedFileType};
@@ -102,28 +102,14 @@ impl WriterInnerType {
         Ok(())
     }
 
-    fn into_inner_writer(mut self) -> ErrorsResult<File> {
+    fn finish(mut self) -> ErrorsResult<()> {
         self.force_write_objects()?;
-        match self.w {
+        let _ = match self.w {
             SerializerType::Json(w) => Ok(w.into_inner()),
             SerializerType::Yaml(w) => w
                 .into_inner()
                 .map_err(|err| Errors::Serialize(err.to_string())),
-        }
-    }
-
-    /// removes the `---` lines from the file
-    /// this is only needed for yaml files
-    fn finish(self) -> ErrorsResult<()> {
-        let file_type = ParsedFileType::from(&self.w);
-        let file = self.into_inner_writer()?;
-
-        if file_type == ParsedFileType::Json {
-            return Ok(());
-        }
-
-        //TODO todo!("remove the --- lines from the file");
-
+        };
         Ok(())
     }
 }
@@ -163,8 +149,6 @@ impl Writers {
     }
 
     pub fn finish(self) -> ErrorsResult<()> {
-        // yaml files add a `---` between each sections
-        // so this is a hack to remove all the `---\n`s
         for (_, writer) in self.writers {
             writer.finish()?;
         }

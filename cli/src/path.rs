@@ -3,11 +3,13 @@ use lingual::Lang;
 use std::{
     collections::HashMap,
     fs::File,
-    io::BufWriter,
     path::{Path, PathBuf},
     str::FromStr,
 };
-use tokio::fs::File as TokioFile;
+use tokio::{
+    fs::File as TokioFile,
+    io::{AsyncReadExt, AsyncWriteExt},
+};
 
 /// Parses relevant information from the path
 /// this information pertains to the yml or json
@@ -70,6 +72,37 @@ pub trait LocalePaths {
         }
 
         Ok(files)
+    }
+
+    /// removes all the dashes in given files
+    /// this particularly happens in yaml which adds: "---" in between mappings
+    async fn remove_all_dashes(
+        &self,
+        langs: &[Lang],
+        file_type: ParsedFileType,
+    ) -> ErrorsResult<()> {
+        if let ParsedFileType::Json = file_type {
+            return Ok(());
+        }
+        let paths = self.gen_locale_paths(langs);
+        for path in paths {
+            let mut file = TokioFile::open(&path)
+                .await
+                .map_err(|err| Errors::RemoveDashes(err.to_string()))?;
+            let mut contents = Vec::new();
+            file.read_to_end(&mut contents)
+                .await
+                .map_err(|err| Errors::RemoveDashes(err.to_string()))?;
+            let contents = String::from_utf8_lossy(&contents);
+            let contents = contents.replace("---\n", "");
+            let mut file = TokioFile::create(path)
+                .await
+                .map_err(|err| Errors::CreateLocaleFile(err.to_string()))?;
+            file.write_all(contents.as_bytes())
+                .await
+                .map_err(|err| Errors::RemoveDashes(err.to_string()))?;
+        }
+        Ok(())
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::{parse::item::MappedObject, path::ParsedFileType};
+use crate::path::ParsedFileType;
 use serde::Serialize;
 use serde_json::{Map, Value as JsonValue};
 use serde_yaml::Mapping;

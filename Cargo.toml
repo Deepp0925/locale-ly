@@ -18,4 +18,4 @@ rust-i18n = "2.1.0"
 version = "0.0.0"
 
 [workspace]
-members = ["src-tauri", "base", "frontend", "errors", "cli"]
+members = ["src-tauri", "base", "frontend", "errors", "cli", "macros"]

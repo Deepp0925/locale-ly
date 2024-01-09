@@ -46,7 +46,6 @@ impl<'a> InterpolatedStr<'a> {
     pub async fn translate(&self, src_lang: Lang, target_lang: Lang) -> ErrorsResult<String> {
         let translated = translate(self.txt, src_lang, target_lang).await?;
         let translated = self.replace(&translated.text)?;
-        println!("{}", translated);
 
         Ok(translated.into_owned())
     }

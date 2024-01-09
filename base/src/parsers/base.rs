@@ -41,7 +41,7 @@ mod tests {
     fn basic_parser_test() {
         let p = super::RegexPattern::Default;
         let mut my_string = "Hello {name}, there are {count} items in your cart".to_string();
-        let parsed = super::basic_parser(&mut my_string, p.clone());
+        let parsed = super::basic_parser(&mut my_string, p);
         assert_eq!(parsed.txt, "Hello {0}, there are {1} items in your cart");
         assert_eq!(parsed.items, vec!["{name}", "{count}"]);
 

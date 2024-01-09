@@ -73,6 +73,8 @@ pub async fn translate(props: TranslateProps<'_>) -> ErrorsResult<()> {
 
     writers.finish()?;
 
+    path.remove_all_dashes(&langs, file_type).await?;
+
     Ok(())
 }
 
@@ -143,5 +145,28 @@ mod test {
         };
 
         translate(props).await.unwrap();
+
+        let props = TranslateProps {
+            langs: vec![Lang::Fr],
+            src_lang: Some(Lang::En),
+            file_type: None,
+            path: Path::new("../assets/locales/en.json"),
+            regex: Some(RegexPattern::Ruby),
+        };
+
+        translate(props).await.unwrap();
+    }
+
+    #[tokio::test]
+    async fn print_lines() {
+        use tokio::{
+            fs::File,
+            io::{AsyncBufReadExt, BufReader},
+        };
+        let reader = BufReader::new(File::open("../assets/locales/fr.yml").await.unwrap());
+        let mut lines = reader.lines();
+        while let Some(line) = lines.next_line().await.unwrap() {
+            println!("{}", line);
+        }
     }
 }
