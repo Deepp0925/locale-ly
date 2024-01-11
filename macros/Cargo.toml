@@ -9,6 +9,6 @@ proc-macro = true
 
 
 [dependencies]
-syn = "2.0.48"
-quote = "1.0.35"
-proc-macro2 = "1.0.76"
+syn = {version = "2.0", features = ["visit"]}
+quote = "1.0"
+proc-macro2 = "1.0"

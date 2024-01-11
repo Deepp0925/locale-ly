@@ -9,8 +9,8 @@ edition = "2021"
 regex = "1.10.2"
 lingual = {workspace =true}
 errors = {workspace =true}
-# sled = "0.34.7"
-# serde = {version="1.0.194", features=["derive"]}
-# serde_json = "1.0.110"
-# serde_yaml = "0.9.30"
-# tokio = {version="1.35.1", features=["rt", "rt-multi-thread", "macros", "fs", "io-util", "test-util"]}
+serde = {version="1.0.194", features=["derive"]}
+serde_json = "1.0.110"
+serde_yaml = "0.9.30"
+tokio = {version="1.35.1", features=["rt", "rt-multi-thread", "macros", "fs", "io-util", "test-util"]}
+rust-i18n = {workspace = true}

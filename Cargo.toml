@@ -8,7 +8,7 @@ frontend = { path = "frontend" }
 
 
 [workspace.dependencies]
-lingual = { git = "https://github.com/Deepp0925/lingual.git" }
+lingual = { path = "lingual" }
 errors = { path = "errors" }
 base = { path = "base" }
 rust-i18n = "2.1.0"

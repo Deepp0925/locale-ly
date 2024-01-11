@@ -1,4 +1,4 @@
-use lingual::Errors as TranslationError;
+use lingual::TranslationError;
 pub type ErrorsResult<T> = Result<T, Errors>;
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]

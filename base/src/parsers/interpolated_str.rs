@@ -4,7 +4,7 @@ use crate::pattern::RegexPattern;
 
 use super::{base::basic_parser, translated::Translated};
 use errors::{Errors, ErrorsResult};
-use lingual::{translate, Lang};
+use lingual::Lang;
 /// A struct that contains the parsed string and the items that were replaced
 /// # Fields
 /// * `txt` - The parsed string
@@ -44,10 +44,11 @@ impl<'a> InterpolatedStr<'a> {
     }
 
     pub async fn translate(&self, src_lang: Lang, target_lang: Lang) -> ErrorsResult<String> {
-        let translated = translate(self.txt, src_lang, target_lang).await?;
-        let translated = self.replace(&translated.text)?;
+        todo!()
+        // let translated = google_translate(self.txt, src_lang, target_lang).await?;
+        // let translated = self.replace(&translated.text)?;
 
-        Ok(translated.into_owned())
+        // Ok(translated.into_owned())
     }
 
     pub async fn translate_bulk(
