@@ -1,0 +1,3 @@
+[submodule "lingual"]
+	path = lingual
+	url = https://github.com/Deepp0925/lingual.git
