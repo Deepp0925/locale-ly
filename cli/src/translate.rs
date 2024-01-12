@@ -86,13 +86,13 @@ async fn handle_str(
     regex: Option<RegexPattern>,
     writers: &mut Writers,
 ) -> ErrorsResult<()> {
-    let translated_txts = InterpolatedStr::from_mut_string(txt, regex)
-        .translate_bulk(src_lang, langs)
-        .await?;
+    // let translated_txts = InterpolatedStr::from_mut_string(txt, regex)
+    //     .translate_bulk(src_lang, langs)
+    //     .await?;
 
-    for translated in translated_txts {
-        writers.push(&translated.lang, key.clone(), translated.txt)?;
-    }
+    // for translated in translated_txts {
+    //     writers.push(&translated.lang, key.clone(), translated.txt)?;
+    // }
 
     Ok(())
 }
@@ -112,15 +112,15 @@ async fn handle_object(
         .collect();
 
     for (key, mut value) in map {
-        let translated_txts = InterpolatedStr::from_mut_string(&mut value, regex)
-            .translate_bulk(src_lang, langs)
-            .await?;
-        for translated in translated_txts {
-            all_translated_items
-                .get_mut(&translated.lang)
-                .unwrap()
-                .insert(key.clone(), translated.txt);
-        }
+        // let translated_txts = InterpolatedStr::from_mut_string(&mut value, regex)
+        //     .translate_bulk(src_lang, langs)
+        //     .await?;
+        // for translated in translated_txts {
+        //     all_translated_items
+        //         .get_mut(&translated.lang)
+        //         .unwrap()
+        //         .insert(key.clone(), translated.txt);
+        // }
     }
 
     for (lang, obj) in all_translated_items {

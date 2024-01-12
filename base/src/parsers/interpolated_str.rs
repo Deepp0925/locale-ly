@@ -4,7 +4,7 @@ use crate::pattern::RegexPattern;
 
 use super::{base::basic_parser, translated::Translated};
 use errors::{Errors, ErrorsResult};
-use lingual::Lang;
+use lingual::{Lang, Translator};
 /// A struct that contains the parsed string and the items that were replaced
 /// # Fields
 /// * `txt` - The parsed string
@@ -43,30 +43,18 @@ impl<'a> InterpolatedStr<'a> {
         Ok(text)
     }
 
-    pub async fn translate(&self, src_lang: Lang, target_lang: Lang) -> ErrorsResult<String> {
-        todo!()
-        // let translated = google_translate(self.txt, src_lang, target_lang).await?;
-        // let translated = self.replace(&translated.text)?;
-
-        // Ok(translated.into_owned())
-    }
-
-    pub async fn translate_bulk(
+    pub async fn translate(
         &self,
-        src_lang: Lang,
-        target_lang: &[Lang],
-    ) -> ErrorsResult<Vec<Translated>> {
-        let mut translated_strs = Vec::with_capacity(target_lang.len());
+        translator: &Translator,
+        src_lang: &Lang,
+        target_lang: &Lang,
+    ) -> ErrorsResult<String> {
+        let translated = translator
+            .translate(self.txt, src_lang, target_lang)
+            .await?;
+        let translated = self.replace(&translated.text)?;
 
-        for lang in target_lang {
-            let translated = self.translate(src_lang, *lang).await?;
-            translated_strs.push(Translated {
-                txt: translated,
-                lang: (*lang),
-            });
-        }
-
-        Ok(translated_strs)
+        Ok(translated.into_owned())
     }
 }
 
