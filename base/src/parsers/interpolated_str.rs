@@ -2,7 +2,7 @@ use std::borrow::Cow;
 
 use crate::pattern::RegexPattern;
 
-use super::{base::basic_parser, translated::Translated};
+use super::base::basic_parser;
 use errors::{Errors, ErrorsResult};
 use lingual::{Lang, Translator};
 /// A struct that contains the parsed string and the items that were replaced
