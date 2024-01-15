@@ -34,10 +34,17 @@ impl<'a> InterpolatedStr<'a> {
         let mut text = Cow::from(text);
 
         for (i, item) in self.items.iter().enumerate() {
-            let pos = text
+            let start = text
                 .find(&format!("{{{}}}", i))
                 .ok_or_else(|| Errors::FindItemIn(text.to_string()))?;
-            text.to_mut().replace_range(pos..pos + 3, item);
+
+            let end = if i > 9 {
+                // 10th item and later, the index will be 4 characters long { + num + } = 4
+                start + 4
+            } else {
+                start + 3
+            };
+            text.to_mut().replace_range(start..end, item);
         }
 
         Ok(text)
@@ -54,7 +61,7 @@ impl<'a> InterpolatedStr<'a> {
             .await?;
         let translated = self.replace(&translated.text)?;
 
-        Ok(translated.into_owned())
+        Ok(translated.escape_unicode().to_string())
     }
 }
 
@@ -62,4 +69,36 @@ impl From<InterpolatedStr<'_>> for String {
     fn from(s: InterpolatedStr) -> Self {
         s.txt.to_owned()
     }
+}
+
+#[test]
+fn test_interpolated_str() {
+    let mut s = "Hello {name}, there are {count} items in your cart".to_string();
+    let parsed = InterpolatedStr::from_mut_string(&mut s, None);
+    assert_eq!(parsed.txt, "Hello {0}, there are {1} items in your cart");
+    assert_eq!(parsed.items, vec!["{name}", "{count}"]);
+
+    let mut s = "Hello {name}, {there} are {count} {items} in your {cart}. Please {check} page {for} more {details}. Also {other} contains {notification}. Additional info @{location} available at {here}".to_string();
+    let s_cloned = s.clone();
+    let parsed = InterpolatedStr::from_mut_string(&mut s, None);
+    assert_eq!(parsed.txt, "Hello {0}, {1} are {2} {3} in your {4}. Please {5} page {6} more {7}. Also {8} contains {9}. Additional info @{10} available at {11}");
+    assert_eq!(
+        parsed.items,
+        vec![
+            "{name}",
+            "{there}",
+            "{count}",
+            "{items}",
+            "{cart}",
+            "{check}",
+            "{for}",
+            "{details}",
+            "{other}",
+            "{notification}",
+            "{location}",
+            "{here}"
+        ]
+    );
+
+    assert_eq!(s_cloned, parsed.replace(parsed.txt).unwrap());
 }
