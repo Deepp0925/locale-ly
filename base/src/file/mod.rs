@@ -1,3 +1,3 @@
-mod item;
+pub mod item;
 mod object;
 mod parse;
