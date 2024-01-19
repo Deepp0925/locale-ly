@@ -1,6 +1,6 @@
 use std::{collections::HashMap, path::Path};
 
-use base::{parsers::interpolated_str::InterpolatedStr, pattern::RegexPattern};
+use base::{parsers::interpolated::InterpolatedStr, pattern::RegexPattern};
 use errors::{Errors, ErrorsResult};
 use lingual::Lang;
 

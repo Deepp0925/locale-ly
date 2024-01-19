@@ -7,6 +7,12 @@ pub enum Errors {
     NoSrcLocale,
     /// Unknown File Type resulting in no file being parsed
     UnknownFileType,
+    /// There was an error opening the file
+    OpenFile(String),
+    /// There was an error parsing the json
+    InvalidJson(String),
+    /// There was an error parsing the yaml
+    InvalidYaml(String),
     // Translation(TranslationError),
     /// An error occurred while parsing the regex.
     Regex(String),

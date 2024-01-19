@@ -1,3 +1,3 @@
 mod base;
-pub mod interpolated_str;
+pub mod interpolated;
 pub mod translated;

@@ -17,20 +17,20 @@ use lingual::{Lang, Translator};
 /// assert_eq!(parsed.items, vec!["name", "count"]);
 /// ```
 #[derive(Debug, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, Default)]
-pub struct InterpolatedStr<'a> {
-    pub txt: &'a str,
+pub struct Interpolated {
+    pub txt: String,
     pub items: Vec<String>,
 }
 
-impl<'a> InterpolatedStr<'a> {
-    pub fn from_mut_string(s: &'a mut String, regex: Option<RegexPattern>) -> Self {
+impl Interpolated {
+    pub fn from_string(s: String, regex: Option<RegexPattern>) -> Self {
         basic_parser(s, regex.unwrap_or_default())
     }
 
     /// replaces the interpolated portion of the string with the given items
     /// # Arguments
     /// * `text` - the string to replace the items in
-    fn replace(&self, text: &'a str) -> ErrorsResult<Cow<'a, str>> {
+    fn replace<'a>(&self, text: &'a str) -> ErrorsResult<Cow<'a, str>> {
         let mut text = Cow::from(text);
 
         for (i, item) in self.items.iter().enumerate() {
@@ -57,7 +57,7 @@ impl<'a> InterpolatedStr<'a> {
         target_lang: &Lang,
     ) -> ErrorsResult<String> {
         let translated = translator
-            .translate(self.txt, src_lang, target_lang)
+            .translate(&self.txt, src_lang, target_lang)
             .await?;
         let translated = self.replace(&translated.text)?;
 
@@ -65,22 +65,16 @@ impl<'a> InterpolatedStr<'a> {
     }
 }
 
-impl From<InterpolatedStr<'_>> for String {
-    fn from(s: InterpolatedStr) -> Self {
-        s.txt.to_owned()
-    }
-}
-
 #[test]
 fn test_interpolated_str() {
-    let mut s = "Hello {name}, there are {count} items in your cart".to_string();
-    let parsed = InterpolatedStr::from_mut_string(&mut s, None);
+    let s = "Hello {name}, there are {count} items in your cart".to_string();
+    let parsed = Interpolated::from_string(s, None);
     assert_eq!(parsed.txt, "Hello {0}, there are {1} items in your cart");
     assert_eq!(parsed.items, vec!["{name}", "{count}"]);
 
-    let mut s = "Hello {name}, {there} are {count} {items} in your {cart}. Please {check} page {for} more {details}. Also {other} contains {notification}. Additional info @{location} available at {here}".to_string();
+    let  s = "Hello {name}, {there} are {count} {items} in your {cart}. Please {check} page {for} more {details}. Also {other} contains {notification}. Additional info @{location} available at {here}".to_string();
     let s_cloned = s.clone();
-    let parsed = InterpolatedStr::from_mut_string(&mut s, None);
+    let parsed = Interpolated::from_string(s, None);
     assert_eq!(parsed.txt, "Hello {0}, {1} are {2} {3} in your {4}. Please {5} page {6} more {7}. Also {8} contains {9}. Additional info @{10} available at {11}");
     assert_eq!(
         parsed.items,
@@ -100,5 +94,5 @@ fn test_interpolated_str() {
         ]
     );
 
-    assert_eq!(s_cloned, parsed.replace(parsed.txt).unwrap());
+    assert_eq!(s_cloned, parsed.replace(&parsed.txt).unwrap());
 }
