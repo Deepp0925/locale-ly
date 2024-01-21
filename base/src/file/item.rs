@@ -74,6 +74,7 @@ impl TranslateObjectType for ObjectType {
     }
 }
 
+#[derive(Debug)]
 pub enum StringType {
     Regular(String),
     Interpolated(Interpolated),
@@ -88,13 +89,17 @@ impl StringType {
         src_lang: &Lang,
         lang: &Lang,
     ) -> ErrorsResult<String> {
-        *self = unsafe {
+        unsafe {
             let result = std::ptr::read(self);
-            if let StringType::Regular(s) = result {
-                StringType::Interpolated(Interpolated::from_string(s, regex))
+
+            let ty = if let StringType::Regular(s) = result {
+                let n = Interpolated::from_string(s, regex);
+                StringType::Interpolated(n)
             } else {
                 result
-            }
+            };
+
+            std::ptr::write(self, ty);
         };
 
         match self {
@@ -122,6 +127,7 @@ impl From<StringType> for String {
 }
 
 pub type JsonMap = Map<String, JsonValue>;
+#[derive(Debug)]
 pub enum ObjectItem {
     String(StringType),
     Array(Vec<StringType>),

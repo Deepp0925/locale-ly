@@ -61,7 +61,7 @@ impl Interpolated {
             .await?;
         let translated = self.replace(&translated.text)?;
 
-        Ok(translated.escape_unicode().to_string())
+        Ok(translated.to_string())
     }
 }
 

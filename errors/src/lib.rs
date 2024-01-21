@@ -33,7 +33,8 @@ pub enum Errors {
 }
 
 impl From<TranslationError> for Errors {
-    fn from(_err: TranslationError) -> Self {
+    fn from(err: TranslationError) -> Self {
+        println!("Translation Error {:?}", err);
         todo!()
     }
 }

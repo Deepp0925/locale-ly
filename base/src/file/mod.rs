@@ -74,3 +74,19 @@ impl<'a> IntoIterator for &'a mut Object {
         self.items.iter_mut()
     }
 }
+
+#[tokio::test]
+async fn testing_file() {
+    use crate::serializers::yaml::IntoYamlObject;
+    use serde_yaml::to_writer as yaml_to_writer;
+    let mut obj = Object::open_yaml("../assets/locales/en.yml").unwrap();
+    let src = Lang::En;
+    let lang = Lang::Es;
+    let translator = Translator::default();
+    let res = obj
+        .translate_items(Some(RegexPattern::Ruby), &translator, &src, &lang)
+        .await
+        .unwrap();
+    let file = File::create("../assets/locales/es.yml").unwrap();
+    yaml_to_writer(file, &res.into_yaml_object()).unwrap();
+}
