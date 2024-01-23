@@ -6,9 +6,8 @@ use serde::{ser::SerializeSeq, Serialize};
 use serde_json::{Map, Value as JsonValue};
 use serde_yaml::{Mapping, Value as YamlValue};
 
-use crate::{
-    parsers::interpolated::Interpolated, pattern::RegexPattern, serializers::serialze_object,
-};
+use super::interpolated::Interpolated;
+use crate::{pattern::RegexPattern, serializers::serialze_object};
 
 pub type ObjectType = HashMap<String, ObjectItem>;
 

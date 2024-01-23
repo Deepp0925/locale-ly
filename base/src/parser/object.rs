@@ -1,5 +1,3 @@
-pub mod item;
-
 use std::{collections::hash_map::IterMut, fs::File, io::BufReader, path::Path};
 
 use errors::{Errors, ErrorsResult};
@@ -7,9 +5,9 @@ use lingual::{Lang, Translator};
 use serde_json::from_reader as json_from_reader;
 use serde_yaml::{from_reader as yaml_from_reader, Mapping};
 
-use crate::{file::item::JsonMap, pattern::RegexPattern};
+use crate::pattern::RegexPattern;
 
-use item::{IntoObjectType, ObjectItem, ObjectType, TranslateObjectType};
+use super::item::{IntoObjectType, JsonMap, ObjectItem, ObjectType, TranslateObjectType};
 
 pub struct Object {
     pub items: ObjectType,

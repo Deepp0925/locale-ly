@@ -1,4 +1,4 @@
-use crate::file::item::ObjectType;
+use crate::parser::item::ObjectType;
 use serde_yaml::Mapping;
 pub trait IntoYamlObject {
     fn into_yaml_object(self) -> Mapping;

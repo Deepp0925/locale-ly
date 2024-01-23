@@ -1,5 +1,4 @@
-pub mod file;
-pub mod parsers;
+pub mod parser;
 pub mod pattern;
 mod serializers;
 // Load I18n macro, for allow you use `t!` macro in anywhere.
