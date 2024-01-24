@@ -1,8 +1,8 @@
+file_expected_key_value: 'Se esperaba que el archivo esté en `[clave]: [valor]` formato'
 Errors:
   err2: Error 2
-  err1: Error 1
   other: Otro error 1
-file_expected_key_value: 'Se esperaba que el archivo esté en `[clave]: [valor]` formato'
+  err1: Error 1
 expected_string: 'Cadena esperada para la tecla: %{key}'
-some_other: Alguna otra cadena
 no_langs_specified: No se especificaron locales objetivo
+some_other: Alguna otra cadena

@@ -1,11 +1,1 @@
-{
-  "expected_string": "Chaîne attendue pour la clé: %{key}",
-  "no_langs_specified": "Aucune localisation cible n'a été spécifiée",
-  "some_other": "Une autre chaîne",
-  "Errors": {
-    "err1": "Erreur 1",
-    "err2": "Erreur 2",
-    "other": "Autre erreur 1"
-  },
-  "file_expected_key_value": "S'attendait à ce que le fichier soit dans le format `[clé]: [valeur]`"
-}
+{"expected_string":"Chaîne attendue pour la clé: %{key}","no_langs_specified":"Aucune localisation cible n'a été spécifiée","some_other":"Une autre chaîne","Errors":{"err1":"Erreur 1","other":"Autre erreur 1","err2":"Erreur 2"},"file_expected_key_value":"S'attendait à ce que le fichier soit dans le format `[clé]: [valeur]`"}
