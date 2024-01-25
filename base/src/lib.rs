@@ -1,14 +1,18 @@
 use std::path::Path;
 
 use errors::{Errors, ErrorsResult};
+use file_type::FileType;
 pub use lingual::{Lang, Translator};
-use path::{FileType, ParseInfo};
+use path::{LocalePaths, ParseInfo};
+// use path::{LocalePaths, ParseInfo};
 pub use pattern::RegexPattern;
+use serializers::Writers;
 pub mod parser;
 mod path;
 pub mod pattern;
 mod serializers;
-use serializers::Writers;
+// use serializers::Writers;
+mod file_type;
 
 use crate::parser::object::Object;
 // Load I18n macro, for allow you use `t!` macro in anywhere.
@@ -56,16 +60,13 @@ pub async fn translate_file(
         .ok_or(Errors::UnknownFileType)?;
 
     let mut parsed_obj = match file_type {
-        FileType::Yaml => Object::open_yaml(&src)?,
-        FileType::Json => Object::open_json(&src)?,
+        FileType::Yaml(_) => Object::open_yaml(&src)?,
+        FileType::Json(_) => Object::open_json(&src)?,
     };
 
-    // for ty in types {
-    //     if ty == &file_type {
-    //         continue;
-    //     }
-
-    // }
+    for mut src_serializer in src.create_src_files(&file_type, types).await? {
+        src_serializer.serialize(&parsed_obj.items)?;
+    }
 
     let mut serializers = Writers::from_file_types(types, langs, &src).await?;
 
@@ -85,7 +86,7 @@ async fn testing_file() {
     translate_file(
         "../assets/locales/en.yml",
         None,
-        &[FileType::Yaml, FileType::Json],
+        &[FileType::Yaml(()), FileType::Json(())],
         None,
         &[Lang::Fr, Lang::Es, Lang::De],
         Some(RegexPattern::Ruby),

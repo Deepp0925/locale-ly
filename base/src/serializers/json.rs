@@ -1,5 +1,6 @@
 use crate::parser::item::ObjectType;
 use serde_json::{Map as JsonMap, Value as JsonValue};
+
 pub trait IntoJsonObject {
     fn into_json_object(self) -> JsonMap<String, JsonValue>;
 }

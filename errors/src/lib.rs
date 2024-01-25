@@ -30,6 +30,8 @@ pub enum Errors {
     CreateLocaleFile(String),
     /// Error removing dashes
     RemoveDashes(String),
+    /// Error creating file format
+    CreateFileFormat(String),
 }
 
 impl From<TranslationError> for Errors {

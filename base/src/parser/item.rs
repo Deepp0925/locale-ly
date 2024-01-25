@@ -44,6 +44,7 @@ impl IntoObjectType for Mapping {
 }
 
 pub trait TranslateObjectType {
+    #[allow(async_fn_in_trait)]
     async fn translate_items(
         &mut self,
         regex: Option<RegexPattern>,

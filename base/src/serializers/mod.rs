@@ -4,16 +4,14 @@ use std::{collections::HashMap, fs::File, io::BufWriter, path::Path};
 
 use errors::{Errors, ErrorsResult};
 use lingual::Lang;
-use serde::{
-    ser::{SerializeMap, Serializer},
-    Serialize,
-};
+use serde::ser::{SerializeMap, Serializer};
 use serde_json::Serializer as JsonSerializer;
 use serde_yaml::Serializer as YamlSerializer;
 
 use crate::{
+    file_type::FileType,
     parser::item::ObjectType,
-    path::{FileType, LocalePaths},
+    path::LocalePaths, // path::LocalePaths,
 };
 
 pub fn serialze_object<S: Serializer>(
@@ -30,34 +28,33 @@ pub fn serialze_object<S: Serializer>(
 }
 
 type WriterType = BufWriter<File>;
-pub type AllWritersType = HashMap<Lang, Vec<WriteSerializer>>;
 
-pub enum WriteSerializer {
+pub type AllWritersType = HashMap<Lang, Vec<SerializerType>>;
+
+pub enum SerializerType {
     Json(JsonSerializer<WriterType>),
     Yaml(YamlSerializer<WriterType>),
 }
 
-impl WriteSerializer {
-    pub fn from_file_type(file_type: &FileType, file: File) -> Self {
+impl SerializerType {
+    pub fn from_file_type<T>(file_type: &FileType<T>, file: File) -> Self {
         let writer = BufWriter::new(file);
 
         match file_type {
-            FileType::Json => Self::Json(JsonSerializer::new(writer)),
-            FileType::Yaml => Self::Yaml(YamlSerializer::new(writer)),
+            FileType::Json(_) => Self::Json(JsonSerializer::new(writer)),
+            FileType::Yaml(_) => Self::Yaml(YamlSerializer::new(writer)),
         }
     }
 
-    fn serialize(&mut self, object: &ObjectType) -> ErrorsResult<()> {
+    pub fn serialize(&mut self, object: &ObjectType) -> ErrorsResult<()> {
         match self {
-            WriteSerializer::Json(w) => {
-                serialze_object(w, object).map_err(|err| Errors::Serialize(err.to_string()))?
+            Self::Json(s) => {
+                serialze_object(s, object).map_err(|err| Errors::Serialize(err.to_string()))
             }
-            WriteSerializer::Yaml(w) => {
-                serialze_object(w, object).map_err(|err| Errors::Serialize(err.to_string()))?
+            Self::Yaml(s) => {
+                serialze_object(s, object).map_err(|err| Errors::Serialize(err.to_string()))
             }
         }
-
-        Ok(())
     }
 }
 

@@ -2,46 +2,15 @@ use errors::{Errors, ErrorsResult};
 use lingual::Lang;
 use std::{
     collections::HashMap,
-    fs::File,
     path::{Path, PathBuf},
     str::FromStr,
 };
 use tokio::fs::File as TokioFile;
 
-use crate::serializers::{AllWritersType, WriteSerializer};
-
-/// Parses relevant information from the path
-/// this information pertains to the yml or json
-/// and if the language specified
-/// This is assuming the format used for the filename is    
-/// `en.yml` or `en.json` - `[lang code].[file extension]`
-#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
-pub enum FileType {
-    #[default]
-    Yaml,
-    Json,
-}
-
-impl FileType {
-    fn from_str(s: &str) -> Option<Self> {
-        match s {
-            "yml" => Some(FileType::Yaml),
-            "yaml" => Some(FileType::Yaml),
-            "json" => Some(FileType::Json),
-            _ => None,
-        }
-    }
-
-    /// returns respective file extension as string
-    /// this allows for outputting file in 'yml' or 'yaml' format
-    /// based on the source file extension
-    fn as_str<'a>(&'a self, src_ext: &'a str) -> &str {
-        match self {
-            FileType::Yaml => src_ext,
-            FileType::Json => "json",
-        }
-    }
-}
+use crate::{
+    file_type::FileType,
+    serializers::{AllWritersType, SerializerType},
+};
 
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct PathInfo {
@@ -56,7 +25,7 @@ pub trait ParseInfo: AsRef<Path> {
         let lang = split.next()?;
         let ext = split.next()?;
         let lang = Lang::from_str(lang).ok()?;
-        let file_type = FileType::from_str(ext)?;
+        let file_type = FileType::<()>::from_str(ext)?;
         Some(PathInfo { lang, file_type })
     }
 }
@@ -64,6 +33,60 @@ pub trait ParseInfo: AsRef<Path> {
 impl<T: AsRef<Path>> LocalePaths for T {}
 
 pub trait LocalePaths: AsRef<Path> {
+    /// generate additional paths for src in different formats
+    fn gen_src_paths(
+        &self,
+        file_type: &FileType,
+        types: &[FileType],
+    ) -> Option<Vec<FileType<PathBuf>>> {
+        let path = self.as_ref();
+        let mut paths = Vec::with_capacity(types.len() - 1);
+        let ext = path.extension()?.to_str()?;
+        for ty in types {
+            // skip the file type that is already present
+            if ty == file_type {
+                continue;
+            }
+
+            let mut path = path.to_path_buf();
+            path.set_extension(ty.as_str(ext));
+            paths.push(ty.map(|_| path));
+        }
+        Some(paths)
+    }
+
+    /// create the files for the src in different formats
+    /// this is used to write the translated items to
+    /// the files
+    async fn create_src_files(
+        &self,
+        file_type: &FileType,
+        types: &[FileType],
+    ) -> ErrorsResult<Vec<SerializerType>> {
+        let paths = self
+            .gen_src_paths(file_type, types)
+            .ok_or(Errors::CreateFileFormat(
+                "Failed to generate src paths".to_string(),
+            ))?;
+
+        let mut files = Vec::with_capacity(paths.len());
+        let mut options = TokioFile::options();
+        let options = options.create(true).read(true).write(true);
+        for path in paths {
+            let file = options
+                .open(path.as_ref())
+                .await
+                .map_err(|err| Errors::CreateFileFormat(err.to_string()))?
+                .into_std()
+                .await;
+            let serializer = SerializerType::from_file_type(&path, file);
+            files.push(serializer);
+        }
+
+        Ok(files)
+    }
+
+    /// Generates the paths for the locale files
     fn gen_locale_paths(
         &self,
         langs: &[Lang],
@@ -106,7 +129,7 @@ pub trait LocalePaths: AsRef<Path> {
                     .map_err(|err| Errors::CreateLocaleFile(err.to_string()))?
                     .into_std()
                     .await;
-                let serializer = WriteSerializer::from_file_type(&types[i], file);
+                let serializer = SerializerType::from_file_type(&types[i], file);
                 serializers.push(serializer);
             }
             files.insert(*lang, serializers);
