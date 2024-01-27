@@ -5,13 +5,16 @@ edition = "2021"
 
 [dependencies]
 frontend = { path = "frontend" }
+cli = { path = "cli" }
+tokio = {workspace=true}
 
 
 [workspace.dependencies]
 lingual = { path = "lingual" }
 errors = { path = "errors" }
 base = { path = "base" }
-rust-i18n = "2.1.0"
+rust-i18n = "3.0"
+tokio = {version="1.35.1", features=["rt", "rt-multi-thread", "macros", "fs", "io-util", "test-util"]}
 
 
 [workspace.package]

@@ -1,8 +1,17 @@
-file_expected_key_value: 'Erwartete die Datei in "[Schlüssel]: [Wert]` Format'
-no_langs_specified: Es wurden keine Zielregelungen angegeben
-some_other: Eine andere Zeichenfolge
-expected_string: 'Erwartete Zeichenfolge für Schlüssel: %{key}'
-Errors:
-  err2: Fehler 2
-  err1: Fehler 1
-  other: Anderer Fehler 1
+invalid_yaml_err: 'Fehler analysieren YAML -Datei: %{err}'
+create_locale_file_err: 'Fehler beim Erstellen von Gebietsdateien: %{err}'
+parse_int_err: Ein Fehler beim Generieren von Token für '%{string}'.
+no_translator_specified: 'Übersetzer kann nicht erkennen. '
+http_err: 'Beim Senden einer Anfrage trat ein Fehler auf: %{err}'
+unknown_file_type_err: 'Es kann nicht erfasst werden, den Dateityp zu erkennen. '
+serialize_err: 'Daten können nicht serialisieren: %{err}'
+unexpected_item_err: Traf beim Parsen einen unerwarteten Gegenstand
+invalid_json_err: 'Fehler analysieren JSON -Objekt: %{err}'
+no_src_locale_err: 'Quellsprache nicht erkennen. '
+no_langs_specified: Es wurden keine Zielsprachen angegeben
+find_item_in_err: 'Element kann in der zurückgegebenen Zeichenfolge nicht finden: %{string}'
+create_file_format_err: 'Fehler erstellen Dateiformat: %{err}'
+url_parse_err: Bei der Parsen der URL -Parameter für '%{string}' trat ein Fehler auf.
+open_file_err: 'Fehleröffnungsdatei: %{err}'
+regex_err: 'Der regelmäßige Ausdruck kann nicht von der vorgesehenen Zeichenfolge erstellt werden: %{err}'
+

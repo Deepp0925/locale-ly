@@ -10,8 +10,8 @@ pub const DEFAULT_REGEX_PATTERN: &str = r"\{(\w+)\}";
 /// in `%{item}`
 pub const RUBY_REGEX_PATTERN: &str = r"%\{(\w+)\}";
 
-#[derive(Debug, Clone, Default, Copy)]
-pub enum RegexPattern {
+#[derive(Debug, Clone, Default, Copy, PartialEq, Eq)]
+pub enum RegexPattern<'a> {
     /// The default regex pattern will match all items
     /// that are wrapped in curly braces, i.e. `{item}`
     #[default]
@@ -21,28 +21,42 @@ pub enum RegexPattern {
     /// in `%{item}`
     Ruby,
     /// A custom regex pattern
-    Custom(&'static str),
+    Custom(&'a str),
 }
 
-impl Default for &RegexPattern {
+impl Default for &RegexPattern<'_> {
     fn default() -> Self {
         &RegexPattern::Default
     }
 }
 
-impl From<RegexPattern> for Regex {
+impl From<RegexPattern<'_>> for Regex {
     fn from(pattern: RegexPattern) -> Self {
         pattern.regex().unwrap()
     }
 }
 
-impl From<&RegexPattern> for Regex {
+impl From<&RegexPattern<'_>> for Regex {
     fn from(pattern: &RegexPattern) -> Self {
         pattern.regex().unwrap()
     }
 }
 
-impl RegexPattern {
+impl<'a> RegexPattern<'a> {
+    pub fn from_str(s: &str, p: Option<&'a str>) -> Option<RegexPattern<'a>> {
+        let is_not_custom = match s {
+            "default" => Some(RegexPattern::Default),
+            "ruby" => Some(RegexPattern::Ruby),
+            _ => None,
+        };
+
+        if let Some(pattern) = is_not_custom {
+            return Some(pattern);
+        }
+
+        p.map(RegexPattern::Custom)
+    }
+
     pub fn regex(&self) -> ErrorsResult<Regex> {
         match self {
             // safe to unwrap the following two as they are hardcoded and

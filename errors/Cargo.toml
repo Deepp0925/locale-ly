@@ -7,3 +7,4 @@ version.workspace = true
 
 [dependencies]
 lingual = {workspace =true}
+rust-i18n = {workspace =true}

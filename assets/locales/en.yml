@@ -1,8 +1,17 @@
-expected_string: "Expected string for  key: %{key}"
-file_expected_key_value: "Expected the file to be in `[key]: [value]` format"
-no_langs_specified: No Target Locales were specified
-some_other: Some other string
-Errors:
-  err2: Error 2
-  err1: Error 1
-  other: Other error 1
+no_langs_specified: No Target languages were specified
+no_translator_specified: >-
+  Unable to detect translator. Please provide a valid translation engine with their api key(if any).
+parse_int_err: "An error while generating token for '%{string}'."
+http_err: "An error occurred while sending a request: %{err}"
+url_parse_err: "An error occurred while parsing the url params for '%{string}'."
+no_src_locale_err: Unable to detect source language. Try passing it as an argument.
+unknown_file_type_err: Unable to detect to source file type. Try passing it as an argument.
+open_file_err: "Error opening file: %{err}"
+invalid_json_err: "Error parsing json object: %{err}"
+invalid_yaml_err: "Error parsing yaml file: %{err}"
+regex_err: "Unable to create regular expression from provided string: %{err}"
+find_item_in_err: "Cannot find item in the returned string: %{string}"
+unexpected_item_err: Encountered an unexpected item while parsing
+serialize_err: "Unable to serialize data: %{err}"
+create_locale_file_err: "Error creating locale files: %{err}"
+create_file_format_err: "Error creating file format: %{err}"

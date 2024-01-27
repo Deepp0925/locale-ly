@@ -1,28 +1,18 @@
 use std::path::Path;
 
 use errors::{Errors, ErrorsResult};
-use file_type::FileType;
-pub use lingual::{Lang, Translator};
+pub use file_type::FileType;
+use lingual::{Lang, Translator};
 use path::{LocalePaths, ParseInfo};
-// use path::{LocalePaths, ParseInfo};
 pub use pattern::RegexPattern;
 use serializers::Writers;
+mod file_type;
 pub mod parser;
 mod path;
 pub mod pattern;
 mod serializers;
-// use serializers::Writers;
-mod file_type;
 
 use crate::parser::object::Object;
-// Load I18n macro, for allow you use `t!` macro in anywhere.
-#[macro_use]
-extern crate rust_i18n;
-rust_i18n::i18n!("../assets/locales", fallback = "en");
-
-pub(crate) fn warn(str: &str) {
-    println!("Warning: {}", str);
-}
 
 /// Translates a given file into the given languages
 /// # Arguments
@@ -39,11 +29,10 @@ pub async fn translate_file(
     types: &[FileType],
     src_lang: Option<Lang>,
     langs: &[Lang],
-    regex: Option<RegexPattern>,
+    regex: Option<RegexPattern<'_>>,
     translator: &Translator,
 ) -> ErrorsResult<()> {
     if langs.is_empty() {
-        warn(&t!("no_langs_specified"));
         return Ok(());
     }
 
@@ -59,10 +48,7 @@ pub async fn translate_file(
         .or(path_info.map(|info| info.file_type))
         .ok_or(Errors::UnknownFileType)?;
 
-    let mut parsed_obj = match file_type {
-        FileType::Yaml(_) => Object::open_yaml(&src)?,
-        FileType::Json(_) => Object::open_json(&src)?,
-    };
+    let mut parsed_obj = Object::open(src.as_ref(), &file_type)?;
 
     for mut src_serializer in src.create_src_files(&file_type, types).await? {
         src_serializer.serialize(&parsed_obj.items)?;

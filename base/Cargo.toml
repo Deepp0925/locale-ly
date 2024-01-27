@@ -12,6 +12,5 @@ errors = {workspace =true}
 serde = {version="1.0.194", features=["derive"]}
 serde_json = "1.0.110"
 serde_yaml = "0.9.30"
-tokio = {version="1.35.1", features=["rt", "rt-multi-thread", "macros", "fs", "io-util", "test-util"]}
-rust-i18n = {workspace = true}
+tokio = {workspace =true}
 async-recursion = "1.0.5"

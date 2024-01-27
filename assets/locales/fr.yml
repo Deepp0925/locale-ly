@@ -1,8 +1,16 @@
-no_langs_specified: Aucune localisation cible n'a été spécifiée
-some_other: Une autre chaîne
-Errors:
-  err1: Erreur 1
-  err2: Erreur 2
-  other: Autre erreur 1
-expected_string: 'Chaîne attendue pour la clé: %{key}'
-file_expected_key_value: 'S''attendait à ce que le fichier soit dans le format `[clé]: [valeur]`'
+serialize_err: 'Impossible de sérialiser les données: %{err}'
+no_translator_specified: 'Impossible de détecter le traducteur. '
+regex_err: 'Impossible de créer une expression régulière à partir de la chaîne fournie: %{err}'
+create_locale_file_err: 'Erreur de création de fichiers locaux: %{err}'
+unknown_file_type_err: 'Impossible de détecter le type de fichier source. '
+unexpected_item_err: Rencontré un article inattendu tout en analysant
+create_file_format_err: 'Erreur Création du format de fichier: %{err}'
+invalid_json_err: 'Erreur d''analyse JSON Objet: %{err}'
+url_parse_err: Une erreur s'est produite lors de l'analyse des paramètres d'URL pour '%{string}'.
+invalid_yaml_err: 'Erreur d''analyse du fichier yaml: %{err}'
+http_err: 'Une erreur s''est produite lors de l''envoi d''une demande: %{err}'
+no_src_locale_err: 'Impossible de détecter la langue source. '
+parse_int_err: Une erreur lors de la génération de jetons pour '%{string}'.
+no_langs_specified: Aucune langue cible n'a été spécifiée
+find_item_in_err: 'Impossible de trouver un élément dans la chaîne retournée: %{string}'
+open_file_err: 'Fichier d''ouverture d''erreur: %{err}'

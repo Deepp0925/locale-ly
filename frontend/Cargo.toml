@@ -6,12 +6,12 @@ version.workspace = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-backend = {path = "../src-tauri"}
-leptos = { version = "0.5", features = ["csr"] }
-serde = { version = "1.0", features = ["derive"] }
-serde-wasm-bindgen = "0.6"
-wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
-wasm-bindgen-futures = "0.4"
-js-sys = "0.3"
-chrono = "0.4.31"
-rust-i18n = {workspace=true}
+# backend = {path = "../src-tauri"}
+# leptos = { version = "0.5", features = ["csr"] }
+# serde = { version = "1.0", features = ["derive"] }
+# serde-wasm-bindgen = "0.6"
+# wasm-bindgen = { version = "0.2", features = ["serde-serialize"] }
+# wasm-bindgen-futures = "0.4"
+# js-sys = "0.3"
+# chrono = "0.4.31"
+# rust-i18n = {workspace=true}

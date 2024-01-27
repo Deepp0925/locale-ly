@@ -5,7 +5,7 @@ use lingual::{Lang, Translator};
 use serde_json::from_reader as json_from_reader;
 use serde_yaml::{from_reader as yaml_from_reader, Mapping};
 
-use crate::pattern::RegexPattern;
+use crate::{file_type::FileType, pattern::RegexPattern};
 
 use super::item::{IntoObjectType, JsonMap, ObjectItem, ObjectType, TranslateObjectType};
 
@@ -41,11 +41,19 @@ impl Object {
         })
     }
 
+    /// opens a file and returns a hashmap of the file contents
+    pub fn open(path: impl AsRef<Path>, file_type: &FileType) -> ErrorsResult<Self> {
+        match file_type {
+            FileType::Json(_) => Self::open_json(path),
+            FileType::Yaml(_) => Self::open_yaml(path),
+        }
+    }
+
     /// This iwll translate all the items in the object
     /// into a new object for the given language
     pub async fn translate_items(
         &mut self,
-        regex: Option<RegexPattern>,
+        regex: Option<RegexPattern<'_>>,
         translator: &Translator,
         src_lang: &Lang,
         lang: &Lang,

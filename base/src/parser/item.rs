@@ -35,7 +35,7 @@ impl IntoObjectType for Mapping {
             if let YamlValue::String(key) = key {
                 items.insert(key, value.into());
             } else {
-                return Err(Errors::ExpectedString("Keys must be strings".to_string()));
+                return Err(Errors::UnexpectedItem);
             }
         }
 
@@ -57,7 +57,7 @@ pub trait TranslateObjectType {
 impl TranslateObjectType for ObjectType {
     async fn translate_items(
         &mut self,
-        regex: Option<RegexPattern>,
+        regex: Option<RegexPattern<'_>>,
         translator: &Translator,
         src_lang: &Lang,
         lang: &Lang,
@@ -84,7 +84,7 @@ impl StringType {
     /// Translates the string if the string is interpolated
     pub async fn translate(
         &mut self,
-        regex: Option<RegexPattern>,
+        regex: Option<RegexPattern<'_>>,
         translator: &Translator,
         src_lang: &Lang,
         lang: &Lang,
@@ -136,9 +136,9 @@ pub enum ObjectItem {
 
 impl ObjectItem {
     #[async_recursion::async_recursion]
-    pub async fn translate(
-        &mut self,
-        regex: Option<RegexPattern>,
+    pub async fn translate<'a>(
+        &'a mut self,
+        regex: Option<RegexPattern<'a>>,
         translator: &Translator,
         src: &Lang,
         lang: &Lang,

@@ -16,6 +16,7 @@ impl Default for FileType {
 }
 
 impl<T> FileType<T> {
+    #[allow(clippy::should_implement_trait)]
     pub fn from_str(s: &str) -> Option<FileType> {
         match s {
             "yml" => Some(FileType::Yaml(())),
